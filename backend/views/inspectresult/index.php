@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\InspectresultSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Inspect Results';
+$this->title = '巡查结果';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="inspect-result-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Inspect Result', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('添加巡查结果', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

@@ -38,7 +38,32 @@ AppAsset::register($this);
         ['label' => 'Home', 'url' => ['/site/index']],
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+        
+        $menuItems = [
+            [
+                'label'=>'主页',
+                'url'=>['/site/index'],
+            ],
+            [
+                'label' => '巡查设置',
+                'url' => ['/site/index'] ,
+                'items'=>[
+                    [
+                        'label'=>'巡查时间',
+                        'url'=>['/inspecttype/index']
+                    ],
+                    [
+                        'label'=>'巡查项目',
+                        'url'=>['/inspectitem/index']
+                    ],
+                    [
+                        'label'=>'巡查标签',
+                        'url'=>['/inspecttag/index']
+                    ]
+                ]
+                
+            ],['label' => 'Login', 'url' => ['/site/login']]
+        ];
     } else {
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')

@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\InspectTag */
 
-$this->title = 'Create Inspect Tag';
-$this->params['breadcrumbs'][] = ['label' => 'Inspect Tags', 'url' => ['index']];
+$this->title = '添加巡查标签';
+$this->params['breadcrumbs'][] = ['label' => '巡查标签', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="inspect-tag-create">

@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\InspectResult */
 
-$this->title = 'Create Inspect Result';
-$this->params['breadcrumbs'][] = ['label' => 'Inspect Results', 'url' => ['index']];
+$this->title = '添加巡查结果';
+$this->params['breadcrumbs'][] = ['label' => '巡查结果', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="inspect-result-create">

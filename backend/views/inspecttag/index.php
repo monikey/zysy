@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\InspecttagSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Inspect Tags';
+$this->title = '巡查标签';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="inspect-tag-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Inspect Tag', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('添加巡查标签', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

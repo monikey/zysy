@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\InspectType */
 
-$this->title = 'Create Inspect Type';
-$this->params['breadcrumbs'][] = ['label' => 'Inspect Types', 'url' => ['index']];
+$this->title = '添加巡查时间';
+$this->params['breadcrumbs'][] = ['label' => '巡查时间', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="inspect-type-create">
