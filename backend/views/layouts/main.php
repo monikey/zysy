@@ -60,9 +60,27 @@ AppAsset::register($this);
                         'label'=>'巡查标签',
                         'url'=>['/inspecttag/index']
                     ]
+                ] 
+            ],
+            [
+                'label' => '数据导入',
+                'url' => ['/site/index'] ,
+                'items'=>[
+                    [
+                        'label'=>'学生数据导入',
+                        'url'=>['/students/index']
+                    ],
+                    [
+                        'label'=>'教师信息导入',
+                        'url'=>['/inspectitem/index']
+                    ],
+                    [
+                        'label'=>'班级信息导入',
+                        'url'=>['/inspecttag/index']
+                    ]
                 ]
-                
-            ],['label' => 'Login', 'url' => ['/site/login']]
+            ],
+            ['label' => 'Login', 'url' => ['/site/login']]
         ];
     } else {
         $menuItems[] = '<li>'
