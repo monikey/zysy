@@ -63,7 +63,7 @@ AppAsset::register($this);
                 ] 
             ],
             [
-                'label' => '数据导入',
+                'label' => '基础数据设置',
                 'url' => ['/site/index'] ,
                 'items'=>[
                     [
@@ -76,8 +76,12 @@ AppAsset::register($this);
                     ],
                     [
                         'label'=>'班级信息导入',
-                        'url'=>['/inspecttag/index']
-                    ]
+                        'url'=>['/classes/index']
+                    ],
+                    [
+                        'label'=>'部门设置',
+                        'url'=>['/department/index']
+                    ],
                 ]
             ],
             ['label' => 'Login', 'url' => ['/site/login']]

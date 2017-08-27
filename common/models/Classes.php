@@ -20,6 +20,7 @@ use Yii;
  */
 class Classes extends \yii\db\ActiveRecord
 {
+    public $files;
     /**
      * @inheritdoc
      */
@@ -51,6 +52,7 @@ class Classes extends \yii\db\ActiveRecord
             'major' => 'Major',
             'departmentId' => 'Department ID',
             'status' => 'Status',
+            'files'=>'上传excel',
         ];
     }
 

@@ -41,8 +41,8 @@ class Department extends \yii\db\ActiveRecord
     {
         return [
             'departmentId' => 'Department ID',
-            'dName' => 'D Name',
-            'dLeader' => 'D Leader',
+            'dName' => '部门名称',
+            'dLeader' => '部长',
         ];
     }
 

@@ -12,6 +12,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use yii\base\Model;
+use common\models\Classes;
 
 
 
@@ -135,7 +136,7 @@ class StudentsController extends Controller
                 $data = array('error'=>'1','msg'=>'文件上传失败,请重新上传..','info'=>'');
             }
             $excelFile = '';    //文件名
-            $filepath = "/uploads/";
+            $filepath = "uploads/";
             $allowtype=array("xls");
             $arr=explode(".", $_FILES['Students']['name']['files']);
             $hz=strtolower($arr[count($arr)-1]);
@@ -156,44 +157,89 @@ class StudentsController extends Controller
                 $phpexcel = $excelReader->load($excelFile)->getSheet(0);//载入文件并获取第一个sheet
                 $total_line = $phpexcel->getHighestRow();            //多少行
                 $total_column = $phpexcel->getHighestColumn();       //多少列
-                $info = array();
-                $okk = array();
-                $err = array();
+                $msg = array();
                 for($row = 2; $row <= $total_line; $row++) {
                     $oneUser = array();
-                    for($column = 'A'; $column <= 'K'; $column++) {
+                    for($column = 'A'; $column <= 'G'; $column++) {
                         $oneUser[] = trim($phpexcel->getCell($column.$row)->getValue());
                     }
-                    
-                    $username = $oneUser[3];        //用户名
-                    $pwd = $oneUser[4];             //密码
-                    $existUser = Students::find()->where("username='{$username}'")->exists();
-                    if($existUser){$err[] = $username.'###该用户名已被注册使用,请换一个';break; }
-                    
-                    $memModel = new MemberList;
-                    $memModel->username = $username;
-                    $memModel->password = AuthUser::md9Password($pwd);
-                    $memModel->vip_id = $oneUser[0];
-                    $memModel->sale_id = $oneUser[1];
-                    $memModel->staff_id = $oneUser[2];
-                    $memModel->nickname = $oneUser[5];
-                    $memModel->tel = $oneUser[6];
-                    $memModel->sex = $oneUser[7];
-                    $memModel->vip_type = $oneUser[8];
-                    $memModel->vip_name = $oneUser[9];
-                    $memModel->address = $oneUser[10];
-                    $memModel->add_user = '';
-                    $memModel->add_time = time();
-                    $memModel->isNewRecord = true;
-                    if(!$memModel->save()){
-                        $err[] = $username.'###该用户添加失败,请检查';break;
+                    $tmpStudents = new Students();
+                    $number = $oneUser[0];        //学籍号
+                    $sName = $oneUser[1];             //姓名
+                    $idNumber = $oneUser[2];    //身份证
+                    $address = $oneUser[3];     //地址
+                     
+                    if($oneUser[4]==='男')
+                    {
+                        $sex = 1;
+                    }else {
+                        $sex = 0;
                     }
                     
-                    $okk[] = $username.'###该用户导入成功!!!';
+                    if($oneUser[5]==='是')
+                        $isResident = 1;
+                    else
+                        $isResident = 0;
+                    $grade = mb_substr($oneUser[6],0,2);
+                    $major = mb_substr($oneUser[6],2,strlen($oneUser[6]));
+                    $tmpClasses=Classes::find()->where(['grade'=>$grade,'major'=>$major])->one();
+                    $tmpStudents->classId=$tmpClasses->classId;
+                    $tmpStudents->address = $address;
+                    $tmpStudents->number = $number;
+                    $tmpStudents->sName = $sName;
+                    $tmpStudents->idNumber = $idNumber;
+                    $tmpStudents->sex = $sex;
+                    $tmpStudents->isResident = $isResident;
+                    //echo Yii::trace(CVarDumper::dumpAsString($test),'vardump');
+                    if (Students::findOne($number)===null){
+                        if (($tmpStudents->setBirthday())['error']==0){
+                            if($tmpStudents->save()){
+                                $msg[]=['studentName'=>$sName,'result'=>$sName.'导入成功，身份证未知错误'];
+                            }else{
+                                $msg[]=['studentName'=>$sName,'result'=>$sName.'导入失败，身份证未知错误'];
+                            }
+                            
+                        }else if (($tmpStudents->setBirthday())['error']==1){
+                            if ($tmpStudents->save()){
+                                $msg[]=['studentName'=>$sName,'result'=>$sName.'导入成功，身份证格式错误'];
+                            }else {
+                                $msg[]=['studentName'=>$sName,'result'=>$sName.'导入失败，身份证格式错误'];
+                            }
+                        }
+                        else {
+                            if ($tmpStudents->save()){
+                                $msg[]=['studentName'=>$sName,'result'=>$sName.'导入成功'];
+                            }else {
+                                $msg[]=['studentName'=>$sName,'result'=>$sName.'导入失败'];
+                                print_r($tmpStudents->getErrors());
+                            }
+                        }
+                    }else{
+                        if (($tmpStudents->setBirthday())['error']==0){
+                            if($tmpStudents->update()){
+                                $msg[]=['studentName'=>$sName,'result'=>$sName.'更新成功，身份证未知错误'];
+                            }else{
+                                $msg[]=['studentName'=>$sName,'result'=>$sName.'更新失败，身份证未知错误'];
+                            }
+                            
+                        }else if (($tmpStudents->setBirthday())['error']==1){
+                            if ($tmpStudents->update()){
+                                $msg[]=['studentName'=>$sName,'result'=>$sName.'更新成功，身份证格式错误'];
+                            }else {
+                                $msg[]=['studentName'=>$sName,'result'=>$sName.'更新失败，身份证格式错误'];
+                            }
+                        }
+                        else {
+                            if ($tmpStudent->update()){
+                                $msg[]=['studentName'=>$sName,'msg'=>$sName.'更新成功'];
+                            }else {
+                                $msg[]=['studentName'=>$sName,'msg'=>$sName.'更新失败'];
+                            }
+                        }
+                    }
                 }
-                $info['err'] = $err;
-                $info['okk'] = $okk;
-                $data = array('error'=>'0','msg'=>'成功','info'=>$info);
+                
+                return $this->render('uploadresult',['dataProvider'=>$msg]);
             }
         }
         return $this->render('index');
